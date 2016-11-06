@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StopWatch</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script   src="https://code.jquery.com/jquery-3.1.1.js"   integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="   crossorigin="anonymous"></script>
+
+    <style type="text/css">
+        body {
+          background: url('https://sitchallenge.com/themes/alchemist/assets/img/top-bg1.jpg') no-repeat center center fixed;
+          -webkit-background-size: cover;
+          -moz-background-size: cover;
+          -o-background-size: cover;
+          background-size: cover;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          min-height: 100vh;
+        }
+
+        .allStopwatch{
+            margin-top: 6%;
+        }
+
+.ict-logo {
+  margin: 0 auto;
+  margin-top: 2em;
+  text-align: center;
+}
+
+ .ict-logo img{
+  max-width: 15em;
+  margin: 0 auto;
+}
+
+    </style>
+</head>
+    <body>
+        <div class="col-md-12 allStopwatch">
+            <div class="col-md-1"></div>
+            <div class="jumbotron col-md-10">
+              <div class="container">
+                        <div class="row ict-logo">
+                        <div class="col-xs-12">
+                            <img src="https://sitchallenge.com/themes/alchemist/assets/img/ict_c.png" class="img-responsive" alt="">
+                        </div>
+                    </div>                    <p class="text-center">
+                        <span id="hour" style="font-size:11em">01</span>
+                        <span style="font-size:11em"> : </span>
+                        <span id="min" style="font-size:11em">00</span>
+                        <span style="font-size:11em"> : </span>  
+                        <span id="sec" style="font-size:11em">00</span>
+                    </p>
+                    
+              </div>
+                <div class="col-md-12 text-center">
+                    <button type="button" id="startButton" class="btn btn-success">
+                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Start
+                    </button>
+                    <button type="button" id="pauseButton" class="btn btn-warning">
+                    <span class="glyphicon glyphicon-pause" aria-hidden="true"></span> Pause
+                    </button>
+                    <button type="button" id="resumeButton" class="btn btn-info">
+                    <span class="glyphicon glyphicon-play" aria-hidden="true"></span> Resume
+                    </button>
+                    <button type="button" id="restartButton" class="btn btn-danger">
+                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Restart
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        
+    </body>
+    
+    <script type="text/javascript">
+        $( "#pauseButton" ).hide();
+        $( "#resumeButton" ).hide();
+        $( "#restartButton" ).hide();
+        var Clock = {
+          totalSeconds: 3600,
+
+          start: function () {
+            var self = this;
+            $( "#startButton" ).hide();
+            $( "#pauseButton" ).show();
+            $( "#resumeButton" ).show();
+            $( "#restartButton" ).show();
+            this.interval = setInterval(function () {
+              self.totalSeconds -= 1;
+
+                if (self.totalSeconds == -1) {
+                    clearInterval(self.interval);
+                    delete self.interval;
+                    $( "#pauseButton" ).prop( "disabled", true );
+                    $( "#resumeButton" ).prop( "disabled", true );
+                    return;
+                }
+
+              $("#hour").text(n(Math.floor(self.totalSeconds / 3600)));
+              $("#min").text(n(Math.floor(self.totalSeconds / 60 % 60)));
+              $("#sec").text(n(parseInt(self.totalSeconds % 60)));
+            }, 1000);
+
+            function n(n){
+                return n > 9 ? "" + n: "0" + n;
+            }
+          },
+
+          pause: function () {
+            clearInterval(this.interval);
+            delete this.interval;
+          },
+
+          resume: function () {
+            if (!this.interval) this.start();
+          },
+
+          restart: function(){
+            location.reload();
+          }
+        };
+
+        $('#startButton').click(function () { Clock.start(); });
+        $('#pauseButton').click(function () { Clock.pause(); });
+        $('#resumeButton').click(function () { Clock.resume(); });
+        $('#restartButton').click(function () { Clock.restart(); });
+    </script>
+</html>
